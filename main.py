@@ -8,7 +8,26 @@ from settings import Settings
 
 
 class TowerDefenseGame:
+    """
+    Основной класс игры Tower Defense, управляющий игровым циклом, событиями и отрисовкой.
+
+    Атрибуты:
+        settings (Settings): Настройки игры.
+        screen (pygame.Surface): Поверхность для отрисовки.
+        clock (pygame.time.Clock): Таймер для управления FPS.
+        background (pygame.Surface): Фон игры.
+        level (Level): Объект уровня.
+        grid (Grid): Объект сетки для размещения башен.
+        font (pygame.font.Font): Шрифт для текста.
+        shoot_sound (pygame.mixer.Sound): Звук выстрела.
+        selected_tower_type (str): Выбранный тип башни ('basic' или 'sniper').
+        is_game_over (bool): Флаг окончания игры.
+    """
+
     def __init__(self):
+        """
+        Инициализация игры.
+        """
         pygame.init()
         self.settings = Settings()
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
@@ -29,13 +48,27 @@ class TowerDefenseGame:
         self.is_game_over = False
 
     def game_over(self):
+        """
+        Устанавливает флаг окончания игры.
+        """
         self.is_game_over = True
 
     def is_position_inside(self, pos):
-        """Check if a given position is inside the game screen boundaries."""
+        """
+        Проверяет, находится ли заданная позиция внутри игрового экрана.
+
+        Args:
+            pos (tuple): Координаты позиции (x, y).
+
+        Returns:
+            bool: True, если позиция находится внутри экрана, иначе False.
+        """
         return 0 <= pos.x <= self.settings.screen_width and 0 <= pos.y <= self.settings.screen_height
 
     def _check_events(self):
+        """
+        Обрабатывает события, такие как нажатия клавиш и клики мыши.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -47,8 +80,8 @@ class TowerDefenseGame:
                 elif event.key == pygame.K_2:
                     self.selected_tower_type = 'sniper'
                     print("Selected sniper tower.")
-                elif event.key == pygame.K_SPACE:
-                    self.grid.show_spots = not self.grid.show_spots
+                elif event.key == pygame.K_SPACE:  # Обработка нажатия на Пробел
+                    self.grid.show_spots = not self.grid.show_spots  # Переключаем флаг
                     print("Show spots:", self.grid.show_spots)
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.selected_tower_type:
@@ -58,16 +91,25 @@ class TowerDefenseGame:
                     print("No tower type selected.")
 
     def _update_game(self):
+        """
+        Обновляет состояние игры, включая уровень и сетку.
+        """
         self.level.update()
         self.grid.update()
 
     def _draw_win_screen(self):
+        """
+        Отрисовывает экран победы.
+        """
         win_text = "You Win!"
         win_render = self.font.render(win_text, True, (255, 215, 0))
         win_rect = win_render.get_rect(center=(self.settings.screen_width / 2, self.settings.screen_height / 2))
         self.screen.blit(win_render, win_rect)
 
     def _draw_game_over_screen(self):
+        """
+        Отрисовывает экран проигрыша.
+        """
         self.screen.fill((0, 0, 0))
 
         game_over_text = "Game Over!"
@@ -78,6 +120,9 @@ class TowerDefenseGame:
         self.screen.blit(game_over_render, game_over_rect)
 
     def _draw(self):
+        """
+        Отрисовывает все элементы игры на экране.
+        """
         if self.is_game_over:
             self._draw_game_over_screen()
         else:
@@ -104,6 +149,9 @@ class TowerDefenseGame:
         pygame.display.flip()
 
     def run_game(self):
+        """
+        Запускает основной игровой цикл.
+        """
         while True:
             self._check_events()
             self._update_game()
