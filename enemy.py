@@ -4,7 +4,6 @@ from pygame.math import Vector2
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, path, speed=2, health=10, image_path=None, game=None):
-
         super().__init__()
         self.image = pygame.Surface((30, 40))
         self.image = pygame.image.load(image_path).convert_alpha()
@@ -16,6 +15,8 @@ class Enemy(pygame.sprite.Sprite):
         self.health = health
         self.position = Vector2(path[0])
         self.rect.center = self.position
+
+        self.play_spawn_sound()
 
     def take_damage(self, amount):
         self.health -= amount
@@ -37,3 +38,10 @@ class Enemy(pygame.sprite.Sprite):
             if self.path_index >= len(self.path) - 1:
                 self.game.game_over()
                 self.kill()
+
+    def play_spawn_sound(self):
+        """
+        Воспроизведение звука появления врага.
+        """
+        spawn_sound = pygame.mixer.Sound(self.game.settings.enemy_spawn_sound)
+        spawn_sound.play()

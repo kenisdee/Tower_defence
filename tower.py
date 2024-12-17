@@ -1,6 +1,8 @@
-import pygame
-from bullet import Bullet
 import math
+
+import pygame
+
+from bullet import Bullet
 
 
 class Tower(pygame.sprite.Sprite):
@@ -25,7 +27,7 @@ class Tower(pygame.sprite.Sprite):
         mouse_pos = pygame.mouse.get_pos()
         if self.is_hovered(mouse_pos):
             level_text = self.game.font.render(f"Level: {self.level}", True, (255, 255, 255))
-            upgrade_cost_text = self.game.font.render(f"Upgrade: ${self.upgrade_cost()  }", True, (255, 255, 255))
+            upgrade_cost_text = self.game.font.render(f"Upgrade: ${self.upgrade_cost()}", True, (255, 255, 255))
 
             level_text_pos = (self.position.x, self.position.y + 20)
             upgrade_cost_pos = (self.position.x, self.position.y + 40)
@@ -45,7 +47,23 @@ class Tower(pygame.sprite.Sprite):
         return self.rect.collidepoint(mouse_pos)
 
     def shoot(self, target, bullets_group):
-        pass
+        """
+        Выстрел башни по цели.
+
+        Args:
+            target (Enemy): Цель для выстрела.
+            bullets_group (pygame.sprite.Group): Группа пуль.
+        """
+        new_bullet = Bullet(self.position, target.position, self.damage, self.game)
+        bullets_group.add(new_bullet)
+        self.play_shoot_sound()  # Воспроизведение звука выстрела
+
+    def play_shoot_sound(self):
+        """
+        Воспроизведение звука выстрела.
+        """
+        shoot_sound = pygame.mixer.Sound(self.game.settings.shoot_sound)
+        shoot_sound.play()
 
     def rotate_towards_target(self, target):
         dx = target.position.x - self.position.x
@@ -82,10 +100,6 @@ class BasicTower(Tower):
         self.damage = 20
         self.rate_of_fire = 1000
 
-    def shoot(self, target, bullets_group):
-        new_bullet = Bullet(self.position, target.position, self.damage, self.game)
-        bullets_group.add(new_bullet)
-
 
 class SniperTower(Tower):
     def __init__(self, position, game):
@@ -106,7 +120,3 @@ class SniperTower(Tower):
                 healthiest_enemy = enemy
                 max_health = enemy.health
         return healthiest_enemy
-
-    def shoot(self, target, bullets_group):
-        new_bullet = Bullet(self.position, target.position, self.damage, self.game)
-        bullets_group.add(new_bullet)
