@@ -3,7 +3,31 @@ from pygame.math import Vector2
 
 
 class Enemy(pygame.sprite.Sprite):
+    """
+    Класс Enemy представляет врага, которого игрок должен уничтожить.
+
+    Атрибуты:
+        image (pygame.Surface): Изображение врага.
+        rect (pygame.Rect): Прямоугольник для обработки коллизий.
+        game (TowerDefenseGame): Ссылка на основной объект игры.
+        path (list): Список точек, по которым движется враг.
+        path_index (int): Индекс текущей точки пути.
+        speed (float): Скорость движения врага.
+        health (int): Здоровье врага.
+        position (Vector2): Текущая позиция врага.
+    """
+
     def __init__(self, path, speed=2, health=10, image_path=None, game=None):
+        """
+        Инициализация объекта Enemy.
+
+        Args:
+            path (list): Список точек, по которым движется враг.
+            speed (float): Скорость движения врага.
+            health (int): Здоровье врага.
+            image_path (str): Путь к изображению врага.
+            game (TowerDefenseGame): Основной объект игры.
+        """
         super().__init__()
         self.image = pygame.Surface((30, 40))
         self.image = pygame.image.load(image_path).convert_alpha()
@@ -19,11 +43,20 @@ class Enemy(pygame.sprite.Sprite):
         self.play_spawn_sound()
 
     def take_damage(self, amount):
+        """
+        Наносит урон врагу.
+
+        Args:
+            amount (int): Количество урона.
+        """
         self.health -= amount
         if self.health <= 0:
             self.kill()
 
     def update(self):
+        """
+        Обновляет позицию врага и проверяет, достиг ли он конца пути.
+        """
         if self.path_index < len(self.path) - 1:
             start_point = Vector2(self.path[self.path_index])
             end_point = Vector2(self.path[self.path_index + 1])

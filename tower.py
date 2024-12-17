@@ -6,7 +6,30 @@ from bullet import Bullet
 
 
 class Tower(pygame.sprite.Sprite):
+    """
+    Базовый класс для всех типов башен.
+
+    Атрибуты:
+        position (pygame.math.Vector2): Позиция башни.
+        game (TowerDefenseGame): Ссылка на основной объект игры.
+        image (pygame.Surface): Изображение башни.
+        rect (pygame.Rect): Прямоугольник для обработки коллизий.
+        tower_range (int): Дальность действия башни.
+        damage (int): Урон, наносимый башней.
+        rate_of_fire (int): Скорострельность башни (в миллисекундах).
+        last_shot_time (int): Время последнего выстрела.
+        level (int): Уровень башни.
+        original_image (pygame.Surface): Оригинальное изображение башни (без поворота).
+    """
+
     def __init__(self, position, game):
+        """
+        Инициализация объекта Tower.
+
+        Args:
+            position (tuple): Позиция башни.
+            game (TowerDefenseGame): Основной объект игры.
+        """
         super().__init__()
         self.position = pygame.math.Vector2(position)
         self.game = game
@@ -21,9 +44,21 @@ class Tower(pygame.sprite.Sprite):
         self.original_image = self.image
 
     def upgrade_cost(self):
+        """
+        Возвращает стоимость улучшения башни.
+
+        Returns:
+            int: Стоимость улучшения.
+        """
         return 100 * self.level
 
     def draw(self, screen):
+        """
+        Отрисовывает башню на экране.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         mouse_pos = pygame.mouse.get_pos()
         if self.is_hovered(mouse_pos):
             level_text = self.game.font.render(f"Level: {self.level}", True, (255, 255, 255))
@@ -36,6 +71,14 @@ class Tower(pygame.sprite.Sprite):
             screen.blit(upgrade_cost_text, upgrade_cost_pos)
 
     def update(self, enemies, current_time, bullets_group):
+        """
+        Обновляет состояние башни.
+
+        Args:
+            enemies (pygame.sprite.Group): Группа врагов.
+            current_time (int): Текущее время в миллисекундах.
+            bullets_group (pygame.sprite.Group): Группа пуль.
+        """
         if current_time - self.last_shot_time > self.rate_of_fire:
             target = self.find_target(enemies)
             if target:
@@ -44,6 +87,15 @@ class Tower(pygame.sprite.Sprite):
                 self.last_shot_time = current_time
 
     def is_hovered(self, mouse_pos):
+        """
+        Проверяет, наведена ли мышь на башню.
+
+        Args:
+            mouse_pos (tuple): Координаты мыши.
+
+        Returns:
+            bool: True, если мышь наведена на башню, иначе False.
+        """
         return self.rect.collidepoint(mouse_pos)
 
     def shoot(self, target, bullets_group):
@@ -56,7 +108,7 @@ class Tower(pygame.sprite.Sprite):
         """
         new_bullet = Bullet(self.position, target.position, self.damage, self.game)
         bullets_group.add(new_bullet)
-        self.play_shoot_sound()  # Воспроизведение звука выстрела
+        self.play_shoot_sound()
 
     def play_shoot_sound(self):
         """
@@ -66,6 +118,12 @@ class Tower(pygame.sprite.Sprite):
         shoot_sound.play()
 
     def rotate_towards_target(self, target):
+        """
+        Поворачивает башню в сторону цели.
+
+        Args:
+            target (Enemy): Цель для поворота.
+        """
         dx = target.position.x - self.position.x
         dy = target.position.y - self.position.y
         # Вычисляем угол в радианах
@@ -77,6 +135,15 @@ class Tower(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.position)
 
     def find_target(self, enemies):
+        """
+        Находит ближайшую цель для атаки.
+
+        Args:
+            enemies (pygame.sprite.Group): Группа врагов.
+
+        Returns:
+            Enemy: Ближайший враг, находящийся в радиусе действия башни.
+        """
         nearest_enemy = None
         min_distance = float('inf')
         for enemy in enemies:
@@ -87,11 +154,30 @@ class Tower(pygame.sprite.Sprite):
         return nearest_enemy
 
     def upgrade(self):
+        """
+        Улучшает башню, увеличивая её уровень.
+        """
         self.level += 1
 
 
 class BasicTower(Tower):
+    """
+    Класс BasicTower представляет базовую башню.
+
+    Атрибуты:
+        tower_range (int): Дальность действия башни.
+        damage (int): Урон, наносимый башней.
+        rate_of_fire (int): Скорострельность башни (в миллисекундах).
+    """
+
     def __init__(self, position, game):
+        """
+        Инициализация объекта BasicTower.
+
+        Args:
+            position (tuple): Позиция башни.
+            game (TowerDefenseGame): Основной объект игры.
+        """
         super().__init__(position, game)
         self.image = pygame.image.load('assets/towers/basic_tower.png').convert_alpha()
         self.original_image = self.image
@@ -102,7 +188,23 @@ class BasicTower(Tower):
 
 
 class SniperTower(Tower):
+    """
+    Класс SniperTower представляет снайперскую башню.
+
+    Атрибуты:
+        tower_range (int): Дальность действия башни.
+        damage (int): Урон, наносимый башней.
+        rate_of_fire (int): Скорострельность башни (в миллисекундах).
+    """
+
     def __init__(self, position, game):
+        """
+        Инициализация объекта SniperTower.
+
+        Args:
+            position (tuple): Позиция башни.
+            game (TowerDefenseGame): Основной объект игры.
+        """
         super().__init__(position, game)
         self.image = pygame.image.load('assets/towers/sniper_tower.png').convert_alpha()
         self.image = pygame.transform.rotate(self.image, 90)
@@ -113,6 +215,15 @@ class SniperTower(Tower):
         self.rate_of_fire = 2000
 
     def find_target(self, enemies):
+        """
+        Находит цель с наибольшим здоровьем для атаки.
+
+        Args:
+            enemies (pygame.sprite.Group): Группа врагов.
+
+        Returns:
+            Enemy: Враг с наибольшим здоровьем, находящийся в радиусе действия башни.
+        """
         healthiest_enemy = None
         max_health = 0
         for enemy in enemies:

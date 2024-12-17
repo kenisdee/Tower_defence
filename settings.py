@@ -1,5 +1,37 @@
 class Settings:
+    """
+    Класс Settings содержит конфигурационные параметры игры.
+
+    Атрибуты:
+        screen_width (int): Ширина игрового экрана.
+        screen_height (int): Высота игрового экрана.
+        bg_color (tuple): Цвет фона игрового экрана в формате RGB.
+        rows (int): Количество строк сетки.
+        cols (int): Количество столбцов сетки.
+        grid_size (tuple): Размер одной клетки сетки (ширина, высота).
+        tower_cost (int): Стоимость башни.
+        tower_upgrade_cost (int): Стоимость улучшения башни.
+        tower_sell_percentage (float): Процент возврата денег при продаже башни.
+        enemy_path (list): Список координат, по которым движутся враги.
+        tower_sprites (dict): Словарь с путями к изображениям башен.
+        enemy_sprite (str): Путь к изображению врага.
+        bullet_sprite (str): Путь к изображению пули.
+        background_image (str): Путь к фоновому изображению.
+        shoot_sound (str): Путь к звуку выстрела.
+        enemy_spawn_sound (str): Путь к звуку появления врага.
+        upgrade_sound (str): Путь к звуку улучшения.
+        sell_sound (str): Путь к звуку продажи.
+        enemy_hit_sound (str): Путь к звуку попадания по врагу.
+        background_music (str): Путь к фоновой музыке.
+        starting_money (int): Стартовая сумма денег у игрока.
+        lives (int): Количество жизней игрока.
+        tower_positions (list): Список координат, где можно размещать башни.
+    """
+
     def __init__(self):
+        """
+        Инициализация объекта Settings.
+        """
         self.screen_width = 1200
         self.screen_height = 800
         self.bg_color = (230, 230, 230)

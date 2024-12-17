@@ -5,7 +5,30 @@ from tower import BasicTower, SniperTower
 
 
 class Level:
+    """
+    Класс Level управляет уровнем игры, включая волны врагов и расстановку башен.
+
+    Атрибуты:
+        game (TowerDefenseGame): Ссылка на основной объект игры.
+        enemies (pygame.sprite.Group): Группа врагов.
+        towers (pygame.sprite.Group): Группа башен.
+        bullets (pygame.sprite.Group): Группа пуль.
+        waves (list): Список волн врагов.
+        current_wave (int): Индекс текущей волны.
+        spawned_enemies (int): Количество заспавненных врагов в текущей волне.
+        spawn_delay (int): Задержка между спавном врагов.
+        last_spawn_time (int): Время последнего спавна врага.
+        all_waves_complete (bool): Флаг, указывающий, что все волны завершены.
+        font (pygame.font.Font): Шрифт для отрисовки текста.
+    """
+
     def __init__(self, game):
+        """
+        Инициализация объекта Level.
+
+        Args:
+            game (TowerDefenseGame): Основной объект игры.
+        """
         self.game = game
         self.enemies = pygame.sprite.Group()
         self.towers = pygame.sprite.Group()
@@ -27,11 +50,17 @@ class Level:
         self.font = pygame.font.SysFont("Arial", 24)
 
     def start_next_wave(self):
+        """
+        Запускает следующую волну врагов.
+        """
         if self.current_wave < len(self.waves):
             self.spawned_enemies = 0
             self.spawn_next_enemy()
 
     def spawn_next_enemy(self):
+        """
+        Спавнит следующего врага в текущей волне.
+        """
         if self.spawned_enemies < len(self.waves[self.current_wave]):
             enemy_info = self.waves[self.current_wave][self.spawned_enemies]
             new_enemy = Enemy(**enemy_info, game=self.game)
@@ -39,6 +68,13 @@ class Level:
             self.spawned_enemies += 1
 
     def attempt_place_tower(self, mouse_pos, tower_type):
+        """
+        Пытается разместить башню в указанной позиции.
+
+        Args:
+            mouse_pos (tuple): Координаты мыши.
+            tower_type (str): Тип башни ('basic' или 'sniper').
+        """
         tower_classes = {'basic': BasicTower, 'sniper': SniperTower}
         if tower_type in tower_classes and self.game.settings.starting_money >= self.game.settings.tower_cost:
             grid_pos = self.game.grid.get_grid_position(mouse_pos)
@@ -53,6 +89,9 @@ class Level:
             print("Not enough money or unknown tower type.")
 
     def update(self):
+        """
+        Обновляет состояние уровня, включая врагов, башни и пули.
+        """
         current_time = pygame.time.get_ticks()
 
         if self.current_wave < len(self.waves) and self.spawned_enemies < len(self.waves[self.current_wave]):
@@ -81,11 +120,23 @@ class Level:
             self.all_waves_complete = True
 
     def draw_path(self, screen):
+        """
+        Отрисовывает путь врагов на экране.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         pygame.draw.lines(screen, (0, 128, 0), False, self.game.settings.enemy_path, 5)
         for pos in self.game.settings.tower_positions:
             pygame.draw.circle(screen, (128, 0, 0), pos, 10)
 
     def draw(self, screen):
+        """
+        Отрисовывает уровень, включая врагов, башни и пули.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         self.draw_path(screen)
         self.enemies.draw(screen)
         self.towers.draw(screen)
