@@ -70,6 +70,7 @@ class Grid:
         if tower in self.towers:
             self.towers.remove(tower)
 
+    @staticmethod
     def get_grid_position(self, mouse_pos):
         """
         Получаем координаты клетки сетки по положению мыши.

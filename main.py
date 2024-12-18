@@ -80,6 +80,9 @@ class TowerDefenseGame:
                 elif event.key == pygame.K_2:
                     self.selected_tower_type = 'sniper'
                     print("Selected sniper tower.")
+                elif event.key == pygame.K_3:
+                    self.selected_tower_type = 'money'
+                    print("Selected money tower.")
                 elif event.key == pygame.K_SPACE:  # Обработка нажатия на Пробел
                     self.grid.show_spots = not self.grid.show_spots  # Переключаем флаг
                     print("Show spots:", self.grid.show_spots)

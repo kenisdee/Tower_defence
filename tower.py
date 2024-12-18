@@ -231,3 +231,32 @@ class SniperTower(Tower):
                 healthiest_enemy = enemy
                 max_health = enemy.health
         return healthiest_enemy
+
+
+class MoneyTower(Tower):
+    """
+    Класс MoneyTower представляет башню, которая генерирует деньги.
+
+    Атрибуты:
+        money_generation_rate (int): Частота генерации денег (в миллисекундах).
+        money_amount (int): Количество денег, которое генерирует башня.
+        last_money_time (int): Время последней генерации денег.
+    """
+
+    def __init__(self, position, game):
+        super().__init__(position, game)
+        self.image = pygame.image.load('assets/towers/money_tower.png').convert_alpha()
+        self.original_image = self.image
+        self.rect = self.image.get_rect(center=self.position)
+        self.money_generation_rate = 3000  # Генерация денег каждые 3 секунды
+        self.money_amount = 50  # Башня генерирует 50 денег
+        self.last_money_time = pygame.time.get_ticks()
+
+    def update(self, enemies, current_time, bullets_group):
+        """
+        Обновляет состояние башни, проверяя, прошло ли достаточно времени для генерации денег.
+        """
+        if current_time - self.last_money_time > self.money_generation_rate:
+            self.game.settings.starting_money += self.money_amount
+            self.last_money_time = current_time
+            print(f"Money generated: +${self.money_amount}")
