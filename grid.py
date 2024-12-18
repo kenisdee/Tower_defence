@@ -54,7 +54,7 @@ class Grid:
         Returns:
             bool: True, если башня успешно размещена, иначе False.
         """
-        grid_pos = self.get_grid_position(tower.position)
+        grid_pos = Grid.get_grid_position(tower.position)
         if grid_pos in self.available_spots and not any(tower.rect.collidepoint(grid_pos) for tower in self.towers):
             self.towers.append(tower)
             return True
@@ -71,7 +71,7 @@ class Grid:
             self.towers.remove(tower)
 
     @staticmethod
-    def get_grid_position(self, mouse_pos):
+    def get_grid_position(mouse_pos):
         """
         Получаем координаты клетки сетки по положению мыши.
 

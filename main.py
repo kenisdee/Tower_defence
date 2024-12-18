@@ -63,7 +63,7 @@ class TowerDefenseGame:
         Returns:
             bool: True, если позиция находится внутри экрана, иначе False.
         """
-        return 0 <= pos.x <= self.settings.screen_width and 0 <= pos.y <= self.settings.screen_height
+        return 0 <= pos[0] <= self.settings.screen_width and 0 <= pos[1] <= self.settings.screen_height
 
     def _check_events(self):
         """

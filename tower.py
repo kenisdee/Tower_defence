@@ -106,8 +106,17 @@ class Tower(pygame.sprite.Sprite):
             target (Enemy): Цель для выстрела.
             bullets_group (pygame.sprite.Group): Группа пуль.
         """
-        new_bullet = Bullet(self.position, target.position, self.damage, self.game)
+        # Преобразуем Vector2 в кортеж
+        start_pos = (self.position.x, self.position.y)
+        target_pos = (target.position.x, target.position.y)
+
+        # Создаем новую пулю
+        new_bullet = Bullet(start_pos, target_pos, self.damage, self.game)
+
+        # Добавляем пулю в группу
         bullets_group.add(new_bullet)
+
+        # Воспроизводим звук выстрела
         self.play_shoot_sound()
 
     def play_shoot_sound(self):
