@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from enemy import Enemy
@@ -20,6 +22,7 @@ class Level:
         last_spawn_time (int): Время последнего спавна врага.
         all_waves_complete (bool): Флаг, указывающий, что все волны завершены.
         font (pygame.font.Font): Шрифт для отрисовки текста.
+        current_path (dict): Текущий путь для врагов с номером.
     """
 
     def __init__(self, game):
@@ -33,12 +36,16 @@ class Level:
         self.enemies = pygame.sprite.Group()
         self.towers = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+
+        # Выбираем случайный путь для врагов
+        self.current_path = random.choice(self.game.settings.enemy_paths)
+
         self.waves = [
-            [{'path': self.game.settings.enemy_path, 'speed': 1, 'health': 100,
+            [{'path': self.current_path['path'], 'speed': 1, 'health': 100,
               'image_path': 'assets/enemies/basic_enemy.png'}] * 5,
-            [{'path': self.game.settings.enemy_path, 'speed': 1.5, 'health': 150,
+            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 150,
               'image_path': 'assets/enemies/fast_enemy.png'}] * 7,
-            [{'path': self.game.settings.enemy_path, 'speed': 0.75, 'health': 200,
+            [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,
               'image_path': 'assets/enemies/strong_enemy.png'}] * 4,
         ]
         self.current_wave = 0
@@ -123,7 +130,7 @@ class Level:
         Args:
             screen (pygame.Surface): Поверхность для отрисовки.
         """
-        pygame.draw.lines(screen, (0, 128, 0), False, self.game.settings.enemy_path, 5)
+        pygame.draw.lines(screen, (0, 128, 0), False, self.current_path['path'], 5)
         for pos in self.game.settings.tower_positions:
             pygame.draw.circle(screen, (128, 0, 0), pos, 10)
 
@@ -138,6 +145,11 @@ class Level:
         self.enemies.draw(screen)
         self.towers.draw(screen)
         self.bullets.draw(screen)
+
+        # Отображаем номер выбранного пути
+        path_number_text = self.font.render(f"Path: {self.current_path['number']}", True, (255, 255, 255))
+        screen.blit(path_number_text, (10, 130))
+
         mouse_pos = pygame.mouse.get_pos()
         for tower in self.towers:
             tower.draw(screen)
