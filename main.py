@@ -86,12 +86,18 @@ class TowerDefenseGame:
                 elif event.key == pygame.K_SPACE:  # Обработка нажатия на Пробел
                     self.grid.show_spots = not self.grid.show_spots  # Переключаем флаг
                     print("Show spots:", self.grid.show_spots)
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if self.selected_tower_type:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Левая кнопка мыши
+                    if self.selected_tower_type:
+                        mouse_pos = pygame.mouse.get_pos()
+                        self.level.attempt_place_tower(mouse_pos, self.selected_tower_type)
+                    else:
+                        print("No tower type selected.")
+                elif event.button == 3:  # Правая кнопка мыши
                     mouse_pos = pygame.mouse.get_pos()
-                    self.level.attempt_place_tower(mouse_pos, self.selected_tower_type)
-                else:
-                    print("No tower type selected.")
+                    for tower in self.level.towers:
+                        if tower.is_hovered(mouse_pos):
+                            tower.upgrade()
 
     def _update_game(self):
         """

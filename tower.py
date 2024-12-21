@@ -50,7 +50,7 @@ class Tower(pygame.sprite.Sprite):
         Returns:
             int: Стоимость улучшения.
         """
-        return 100 * self.level
+        return 50 * self.level
 
     def draw(self, screen):
         """
@@ -164,10 +164,16 @@ class Tower(pygame.sprite.Sprite):
 
     def upgrade(self):
         """
-        Улучшает башню, увеличивая её уровень.
+        Улучшает башню, увеличивая её уровень, урон и скорострельность.
         """
-        self.level += 1
-
+        if self.game.settings.starting_money >= self.upgrade_cost():
+            self.game.settings.starting_money -= self.upgrade_cost()
+            self.level += 1
+            self.damage = int(self.damage * 1.2)  # Увеличиваем урон на 20%
+            self.rate_of_fire = int(self.rate_of_fire * 0.8)  # Увеличиваем скорострельность на 20%
+            print(f"Tower upgraded to level {self.level}!")
+        else:
+            print("Not enough money to upgrade tower.")
 
 class BasicTower(Tower):
     """
