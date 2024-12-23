@@ -42,11 +42,14 @@ class Level:  # Определяет класс Level, который управ
             self.game.settings.enemy_paths)  # Выбирает случайный путь для врагов из настроек игры.
 
         self.waves = [  # Определяет список волн врагов.
-            [{'path': self.current_path['path'], 'speed': 1, 'health': 100,  # Первая волна: 5 базовых врагов.
+            [{'path': self.current_path['path'], 'speed': 1, 'health': 100,
+              # Первая волна: 5 базовых врагов.
               'image_path': 'assets/enemies/basic_enemy.png'}] * 5,
-            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 150,  # Вторая волна: 7 быстрых врагов.
+            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 150,
+              # Вторая волна: 7 быстрых, но слабых врагов.
               'image_path': 'assets/enemies/fast_enemy.png'}] * 7,
-            [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,  # Третья волна: 4 сильных врагов.
+            [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,
+              # Третья волна: 4 медленных, но сильных врагов.
               'image_path': 'assets/enemies/strong_enemy.png'}] * 4,
         ]
         self.current_wave = 0  # Устанавливает индекс текущей волны на 0.
