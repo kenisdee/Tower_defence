@@ -1,4 +1,4 @@
-class Settings:
+class Settings:  # Определяет класс Settings, который содержит конфигурационные параметры игры.
     """
     Класс Settings содержит конфигурационные параметры игры.
 
@@ -28,27 +28,28 @@ class Settings:
         tower_positions (list): Список координат, где можно размещать башни.
     """
 
-    def __init__(self):
+    def __init__(self):  # Конструктор класса Settings.
         """
         Инициализация объекта Settings.
         """
-        self.screen_width = 1200
-        self.screen_height = 800
-        self.bg_color = (230, 230, 230)
+        self.screen_width = 1200  # Устанавливает ширину игрового экрана.
+        self.screen_height = 800  # Устанавливает высоту игрового экрана.
+        self.bg_color = (230, 230, 230)  # Устанавливает цвет фона игрового экрана в формате RGB.
 
-        self.rows = 10
-        self.cols = 15
-        self.grid_size = (64, 64)
+        self.rows = 10  # Устанавливает количество строк сетки.
+        self.cols = 15  # Устанавливает количество столбцов сетки.
+        self.grid_size = (64, 64)  # Устанавливает размер одной клетки сетки (ширина, высота).
 
-        self.tower_cost = 100
-        self.money_tower_cost = 200
-        self.tower_upgrade_cost = 150
-        self.tower_sell_percentage = 0.75
+        self.tower_cost = 100  # Устанавливает стоимость башни.
+        self.money_tower_cost = 200  # Устанавливает стоимость башни, генерирующей деньги.
+        self.tower_upgrade_cost = 150  # Устанавливает стоимость улучшения башни.
+        self.tower_sell_percentage = 0.75  # Устанавливает процент возврата денег при продаже башни.
 
-        self.enemy_paths = [
+        self.enemy_paths = [  # Определяет список путей для врагов.
             {
-                'number': 1,
+                'number': 1,  # Номер пути.
                 'path': [(50, 400), (200, 400), (200, 300), (400, 300), (400, 500), (700, 500), (700, 400), (1150, 400)]
+                # Координаты пути.
             },
             {
                 'number': 2,
@@ -80,26 +81,28 @@ class Settings:
             },
         ]
 
-        self.tower_sprites = {
-            'basic': 'assets/towers/basic_tower.png',
-            'sniper': 'assets/towers/sniper_tower.png',
-            'money': 'assets/towers/money_tower.png',
+        self.tower_sprites = {  # Определяет словарь с путями к изображениям башен.
+            'basic': 'assets/towers/basic_tower.png',  # Путь к изображению базовой башни.
+            'sniper': 'assets/towers/sniper_tower.png',  # Путь к изображению снайперской башни.
+            'money': 'assets/towers/money_tower.png',  # Путь к изображению башни, генерирующей деньги.
         }
-        self.enemy_sprite = 'assets/enemies/basic_enemy.png'
-        self.bullet_sprite = 'assets/bullets/basic_bullet.png'
-        self.background_image = 'assets/backgrounds/game_background.png'
+        self.enemy_sprite = 'assets/enemies/basic_enemy.png'  # Путь к изображению врага.
+        self.bullet_sprite = 'assets/bullets/basic_bullet.png'  # Путь к изображению пули.
+        self.background_image = 'assets/backgrounds/game_background.png'  # Путь к фоновому изображению.
 
         # Звуки
-        self.shoot_sound = 'assets/sounds/shoot.mp3'
-        self.enemy_spawn_sound = 'assets/sounds/enemy_spawn.mp3'
-        self.upgrade_sound = 'assets/sounds/upgrade.wav'
-        self.sell_sound = 'assets/sounds/sell.wav'
-        self.enemy_hit_sound = 'assets/sounds/enemy_hit.wav'
-        self.background_music = 'assets/sounds/background_music.mp3'
+        self.shoot_sound = 'assets/sounds/shoot.mp3'  # Путь к звуку выстрела.
+        self.enemy_spawn_sound = 'assets/sounds/enemy_spawn.mp3'  # Путь к звуку появления врага.
+        self.upgrade_sound = 'assets/sounds/upgrade.wav'  # Путь к звуку улучшения.
+        self.sell_sound = 'assets/sounds/sell.wav'  # Путь к звуку продажи.
+        self.enemy_hit_sound = 'assets/sounds/enemy_hit.wav'  # Путь к звуку попадания по врагу.
+        self.background_music = 'assets/sounds/background_music.mp3'  # Путь к фоновой музыке.
 
-        self.starting_money = 500
-        self.lives = 20
+        self.starting_money = 500  # Устанавливает стартовую сумму денег у игрока.
+        self.lives = 20  # Устанавливает количество жизней игрока.
 
-        self.tower_positions = [
+        self.tower_positions = [  # Определяет список координат, где можно размещать башни.
             (x * self.grid_size[0] + self.grid_size[0] // 2, y * self.grid_size[1] + self.grid_size[1] // 2)
-            for x in range(1, self.cols) for y in range(3, self.rows)]
+            # Вычисляет координаты для каждой клетки сетки.
+            for x in range(1, self.cols) for y in
+            range(3, self.rows)]  # Перебирает строки и столбцы сетки, начиная с 1 и 3 соответственно.
