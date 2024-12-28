@@ -42,15 +42,59 @@ class Level:  # Определяет класс Level, который управ
             self.game.settings.enemy_paths)  # Выбирает случайный путь для врагов из настроек игры.
 
         self.waves = [  # Определяет список волн врагов.
+            # Волна 1: 5 базовых врагов
             [{'path': self.current_path['path'], 'speed': 1, 'health': 100,
-              # Первая волна: 5 базовых врагов.
-              'image_path': 'assets/enemies/basic_enemy.png'}] * 5,
-            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 150,
-              # Вторая волна: 7 быстрых, но слабых врагов.
-              'image_path': 'assets/enemies/fast_enemy.png'}] * 7,
+              'image_path': 'assets/enemies/basic_enemy.png', 'reward': 10}] * 5,
+
+            # Волна 2: 7 быстрых врагов
+            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 50,
+              'image_path': 'assets/enemies/fast_enemy.png', 'reward': 5}] * 7,
+
+            # Волна 3: 4 сильных врага
             [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,
-              # Третья волна: 4 медленных, но сильных врагов.
-              'image_path': 'assets/enemies/strong_enemy.png'}] * 4,
+              'image_path': 'assets/enemies/strong_enemy.png', 'reward': 20}] * 4,
+
+            # Волна 4: 10 очень быстрых врагов
+            [{'path': self.current_path['path'], 'speed': 2, 'health': 30,
+              'image_path': 'assets/enemies/very_fast_enemy.png', 'reward': 3}] * 10,
+
+            # Волна 5: 3 очень сильных врага
+            [{'path': self.current_path['path'], 'speed': 0.5, 'health': 300,
+              'image_path': 'assets/enemies/very_strong_enemy.png', 'reward': 30}] * 3,
+
+            # Волна 6: Смесь быстрых и сильных врагов
+            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 50,
+              'image_path': 'assets/enemies/fast_enemy.png', 'reward': 5}] * 5 +
+            [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,
+              'image_path': 'assets/enemies/strong_enemy.png', 'reward': 20}] * 3,
+
+            # Волна 7: Очень быстрые и очень сильные враги
+            [{'path': self.current_path['path'], 'speed': 2, 'health': 30,
+              'image_path': 'assets/enemies/very_fast_enemy.png', 'reward': 3}] * 8 +
+            [{'path': self.current_path['path'], 'speed': 0.5, 'health': 300,
+              'image_path': 'assets/enemies/very_strong_enemy.png', 'reward': 30}] * 2,
+
+            # Волна 8: Большое количество базовых врагов
+            [{'path': self.current_path['path'], 'speed': 1, 'health': 100,
+              'image_path': 'assets/enemies/basic_enemy.png', 'reward': 10}] * 15,
+
+            # Волна 9: Смесь всех типов врагов
+            [{'path': self.current_path['path'], 'speed': 1, 'health': 100,
+              'image_path': 'assets/enemies/basic_enemy.png', 'reward': 10}] * 5 +
+            [{'path': self.current_path['path'], 'speed': 1.5, 'health': 50,
+              'image_path': 'assets/enemies/fast_enemy.png', 'reward': 5}] * 5 +
+            [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,
+              'image_path': 'assets/enemies/strong_enemy.png', 'reward': 20}] * 3 +
+            [{'path': self.current_path['path'], 'speed': 2, 'health': 30,
+              'image_path': 'assets/enemies/very_fast_enemy.png', 'reward': 3}] * 5 +
+            [{'path': self.current_path['path'], 'speed': 0.5, 'health': 300,
+              'image_path': 'assets/enemies/very_strong_enemy.png', 'reward': 30}] * 2,
+
+            # Волна 10: Финальная волна с большим количеством сильных врагов
+            [{'path': self.current_path['path'], 'speed': 0.75, 'health': 200,
+              'image_path': 'assets/enemies/strong_enemy.png', 'reward': 20}] * 10 +
+            [{'path': self.current_path['path'], 'speed': 0.5, 'health': 300,
+              'image_path': 'assets/enemies/very_strong_enemy.png', 'reward': 30}] * 5,
         ]
         self.current_wave = 0  # Устанавливает индекс текущей волны на 0.
         self.spawned_enemies = 0  # Устанавливает количество заспавненных врагов на 0.
